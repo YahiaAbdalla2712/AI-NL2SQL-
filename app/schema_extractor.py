@@ -90,3 +90,118 @@ def extract_columns(cursor):
         )
 
     return columns    
+
+
+
+def extract_primary_keys(cursor):
+    """
+    return all primary keys of the tables
+    """
+    query = """
+        SELECT 
+            s.name AS schema_name,
+            t.name AS table_name,
+            c.name AS column_name,
+            ic.key_ordinal
+
+        FROM sys.tables t
+        INNER JOIN sys.schemas s
+            ON t.schema_id = s.schema_id
+        INNER JOIN sys.indexes i
+            ON t.object_id = i.object_id
+        INNER JOIN sys.index_columns ic
+            ON i.object_id = ic.object_id
+            AND i.index_id = ic.index_id
+        INNER JOIN sys.columns c
+            ON ic.object_id = c.object_id
+            AND ic.column_id = c.column_id
+        WHERE i.is_primary_key = 1
+        ORDER BY
+            s.name,
+            t.name,
+            ic.key_ordinal;                    
+    """
+
+    cursor.execute(query)
+
+    primary_keys = {}
+
+    for row in cursor.fetchball():
+        table_key = f"{row.schema_name}.{row.table_name}"
+
+        primary_keys.setdefault(table_key, []).append(
+            row.column_name
+        )
+
+    return primary_keys
+
+
+
+def extract_foreign_keys(cursor):
+    """
+    extract foreign keys and relationships between tables inside the database 
+    """
+    query="""
+        SELECT 
+            sch_parent.name AS parent_schema,
+            parent_table.name AS parent_table,
+            parent_column.name AS parent_column,
+
+            sch_ref.name AS referenced_schema,
+            referenced_table.name AS referenced_table,
+            referenced_column.name AS referenced_column,
+
+            fk.name AS constraint_name
+        FROM sys.foreign_key_columns fkc
+
+        INNER JOIN sys.foreign_keys fk
+            ON fkc.constraint_object_id = fk.object_id
+
+        INNER JOIN sys.tables parent_table
+            ON fkc.parent_object_id = parent_table.object_id
+
+        INNER JOIN sys.schema sch_parent
+            ON parent_table.schema_id = sch_parent.schema_id
+
+        INNER JOIN sys.columns parent_column
+            ON fkc.parent_object_id = parent_column.object_id
+            AND fkc.parent_column_id = parent_column.column_id
+
+        INNER JOIN sys.tables referenced_table
+            ON fkc.referenced_object_id = referenced_table.object_id
+
+        INNER JOIN sys.schemas sch_ref
+            ON referenced_table.schema_id = sch_ref.schema_id
+
+        INNER JOIN sys.columns referenced_column
+            ON fkc.referenced_object_id = referenced_column.object_id
+            AND fkc.referenced_column_id = referenced_column.column_id
+
+        ORDER BY
+            sch_parent.name,
+            parent_table.name,
+            fk.name;                                    
+    """
+
+    cursor.execute(query)
+
+    relationships = []
+
+    for row in cursor.fetchall():
+        relationships.append(
+            {
+                "constraint_name": row.constraint_name,
+                "from":{
+                    "schema": row.parent_schema,
+                    "table": row.parent_table,
+                    "column": row.parent_column,
+                },
+                "to":{
+                    "schema": row.referenced_schema,
+                    "table": row.referenced_table,
+                    "column": row.referenced_column,
+                },
+            }
+        )
+
+    return relationships    
