@@ -1,0 +1,442 @@
+{
+  "database": "bank",
+  "server": "YAYA\\SQLEXPRESS",
+  "tables": [
+    {
+      "schema": "dbo",
+      "name": "accounts",
+      "columns": [
+        {
+          "name": "account_id",
+          "ordinal_position": 1,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": false
+        },
+        {
+          "name": "customer_id",
+          "ordinal_position": 2,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "account_type",
+          "ordinal_position": 3,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "balance_usd",
+          "ordinal_position": 4,
+          "data_type": "decimal",
+          "max_length": null,
+          "numeric_precision": 12,
+          "numeric_scale": 2,
+          "nullable": true
+        },
+        {
+          "name": "open_date",
+          "ordinal_position": 5,
+          "data_type": "datetime",
+          "max_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        }
+      ],
+      "primary_key": [
+        "account_id"
+      ]
+    },
+    {
+      "schema": "dbo",
+      "name": "branches",
+      "columns": [
+        {
+          "name": "branch_id",
+          "ordinal_position": 1,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": false
+        },
+        {
+          "name": "branch_name",
+          "ordinal_position": 2,
+          "data_type": "varchar",
+          "max_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "manager_name",
+          "ordinal_position": 3,
+          "data_type": "varchar",
+          "max_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "city",
+          "ordinal_position": 4,
+          "data_type": "varchar",
+          "max_length": 50,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "country",
+          "ordinal_position": 5,
+          "data_type": "varchar",
+          "max_length": 50,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        }
+      ],
+      "primary_key": [
+        "branch_id"
+      ]
+    },
+    {
+      "schema": "dbo",
+      "name": "cards",
+      "columns": [
+        {
+          "name": "card_id",
+          "ordinal_position": 1,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": false
+        },
+        {
+          "name": "account_id",
+          "ordinal_position": 2,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "card_type",
+          "ordinal_position": 3,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "expiration_date",
+          "ordinal_position": 4,
+          "data_type": "datetime",
+          "max_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        }
+      ],
+      "primary_key": [
+        "card_id"
+      ]
+    },
+    {
+      "schema": "dbo",
+      "name": "customers",
+      "columns": [
+        {
+          "name": "customer_id",
+          "ordinal_position": 1,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": false
+        },
+        {
+          "name": "first_name",
+          "ordinal_position": 2,
+          "data_type": "varchar",
+          "max_length": 50,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "last_name",
+          "ordinal_position": 3,
+          "data_type": "varchar",
+          "max_length": 50,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "email",
+          "ordinal_position": 4,
+          "data_type": "varchar",
+          "max_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "city",
+          "ordinal_position": 5,
+          "data_type": "varchar",
+          "max_length": 50,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "credit_score",
+          "ordinal_position": 6,
+          "data_type": "int",
+          "max_length": null,
+          "numeric_precision": 10,
+          "numeric_scale": 0,
+          "nullable": true
+        },
+        {
+          "name": "created_at",
+          "ordinal_position": 7,
+          "data_type": "datetime",
+          "max_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        }
+      ],
+      "primary_key": [
+        "customer_id"
+      ]
+    },
+    {
+      "schema": "dbo",
+      "name": "loans",
+      "columns": [
+        {
+          "name": "loan_id",
+          "ordinal_position": 1,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": false
+        },
+        {
+          "name": "customer_id",
+          "ordinal_position": 2,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "loan_amount",
+          "ordinal_position": 3,
+          "data_type": "decimal",
+          "max_length": null,
+          "numeric_precision": 12,
+          "numeric_scale": 2,
+          "nullable": true
+        },
+        {
+          "name": "interest_rate",
+          "ordinal_position": 4,
+          "data_type": "decimal",
+          "max_length": null,
+          "numeric_precision": 5,
+          "numeric_scale": 2,
+          "nullable": true
+        },
+        {
+          "name": "start_date",
+          "ordinal_position": 5,
+          "data_type": "datetime",
+          "max_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        }
+      ],
+      "primary_key": [
+        "loan_id"
+      ]
+    },
+    {
+      "schema": "dbo",
+      "name": "merchants",
+      "columns": [
+        {
+          "name": "merchant_id",
+          "ordinal_position": 1,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": false
+        },
+        {
+          "name": "merchant_name",
+          "ordinal_position": 2,
+          "data_type": "varchar",
+          "max_length": 100,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "city",
+          "ordinal_position": 3,
+          "data_type": "varchar",
+          "max_length": 50,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        }
+      ],
+      "primary_key": [
+        "merchant_id"
+      ]
+    },
+    {
+      "schema": "dbo",
+      "name": "transactions",
+      "columns": [
+        {
+          "name": "transaction_id",
+          "ordinal_position": 1,
+          "data_type": "varchar",
+          "max_length": 25,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": false
+        },
+        {
+          "name": "account_id",
+          "ordinal_position": 2,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "merchant_id",
+          "ordinal_position": 3,
+          "data_type": "varchar",
+          "max_length": 20,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        },
+        {
+          "name": "amount_usd",
+          "ordinal_position": 4,
+          "data_type": "decimal",
+          "max_length": null,
+          "numeric_precision": 12,
+          "numeric_scale": 2,
+          "nullable": true
+        },
+        {
+          "name": "transaction_date",
+          "ordinal_position": 5,
+          "data_type": "datetime",
+          "max_length": null,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "nullable": true
+        }
+      ],
+      "primary_key": [
+        "transaction_id"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "constraint_name": "FK__accounts__custom__4CA06362",
+      "from": {
+        "schema": "dbo",
+        "table": "accounts",
+        "column": "customer_id"
+      },
+      "to": {
+        "schema": "dbo",
+        "table": "customers",
+        "column": "customer_id"
+      }
+    },
+    {
+      "constraint_name": "FK__cards__account_i__4F7CD00D",
+      "from": {
+        "schema": "dbo",
+        "table": "cards",
+        "column": "account_id"
+      },
+      "to": {
+        "schema": "dbo",
+        "table": "accounts",
+        "column": "account_id"
+      }
+    },
+    {
+      "constraint_name": "FK__loans__customer___5629CD9C",
+      "from": {
+        "schema": "dbo",
+        "table": "loans",
+        "column": "customer_id"
+      },
+      "to": {
+        "schema": "dbo",
+        "table": "customers",
+        "column": "customer_id"
+      }
+    },
+    {
+      "constraint_name": "FK__transacti__accou__59063A47",
+      "from": {
+        "schema": "dbo",
+        "table": "transactions",
+        "column": "account_id"
+      },
+      "to": {
+        "schema": "dbo",
+        "table": "accounts",
+        "column": "account_id"
+      }
+    },
+    {
+      "constraint_name": "FK__transacti__merch__59FA5E80",
+      "from": {
+        "schema": "dbo",
+        "table": "transactions",
+        "column": "merchant_id"
+      },
+      "to": {
+        "schema": "dbo",
+        "table": "merchants",
+        "column": "merchant_id"
+      }
+    }
+  ]
+}

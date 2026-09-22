@@ -14,7 +14,7 @@ def get_connection():
     Function to initiate the connection between the SQL server and python using ODBC driver
     """
     connection_string = (
-        f"DRIVER={{DRIVER}};"
+        f"DRIVER={DRIVER};"
         f"SERVER={SERVER};"
         f"DATABASE={DATABASE};"
         "Trusted_Connection=yes;"
@@ -126,7 +126,7 @@ def extract_primary_keys(cursor):
 
     primary_keys = {}
 
-    for row in cursor.fetchball():
+    for row in cursor.fetchall():
         table_key = f"{row.schema_name}.{row.table_name}"
 
         primary_keys.setdefault(table_key, []).append(
@@ -141,6 +141,7 @@ def extract_foreign_keys(cursor):
     """
     extract foreign keys and relationships between tables inside the database 
     """
+    
     query="""
         SELECT 
             sch_parent.name AS parent_schema,
@@ -152,28 +153,28 @@ def extract_foreign_keys(cursor):
             referenced_column.name AS referenced_column,
 
             fk.name AS constraint_name
-        FROM sys.foreign_key_columns fkc
+        FROM sys.foreign_key_columns AS fkc
 
-        INNER JOIN sys.foreign_keys fk
+        INNER JOIN sys.foreign_keys AS fk
             ON fkc.constraint_object_id = fk.object_id
 
-        INNER JOIN sys.tables parent_table
+        INNER JOIN sys.tables AS parent_table
             ON fkc.parent_object_id = parent_table.object_id
 
-        INNER JOIN sys.schema sch_parent
+        INNER JOIN sys.schemas AS sch_parent
             ON parent_table.schema_id = sch_parent.schema_id
 
-        INNER JOIN sys.columns parent_column
+        INNER JOIN sys.columns AS parent_column
             ON fkc.parent_object_id = parent_column.object_id
             AND fkc.parent_column_id = parent_column.column_id
 
-        INNER JOIN sys.tables referenced_table
+        INNER JOIN sys.tables AS referenced_table
             ON fkc.referenced_object_id = referenced_table.object_id
 
-        INNER JOIN sys.schemas sch_ref
+        INNER JOIN sys.schemas AS sch_ref
             ON referenced_table.schema_id = sch_ref.schema_id
 
-        INNER JOIN sys.columns referenced_column
+        INNER JOIN sys.columns AS referenced_column
             ON fkc.referenced_object_id = referenced_column.object_id
             AND fkc.referenced_column_id = referenced_column.column_id
 
@@ -205,3 +206,76 @@ def extract_foreign_keys(cursor):
         )
 
     return relationships    
+
+def extract_schema():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    try:
+        tables = extract_tables(cursor)
+        columns = extract_columns(cursor)
+        primary_keys = extract_primary_keys(cursor)
+        foreign_keys = extract_foreign_keys(cursor)
+
+        schema = {
+            "database": DATABASE,
+            "server": SERVER,
+            "tables": [],
+            "relationships": foreign_keys,
+        }
+
+        for table in tables:
+            table_key = f"{table['schema']}.{table['name']}"
+
+            schema["tables"].append(
+                {
+                    "schema": table["schema"],
+                    "name": table["name"],
+                    "columns": columns.get(table_key, []),
+                    "primary_key": primary_keys.get(table_key, []),
+                }
+            )
+        return schema
+
+    finally:
+        cursor.close()
+        connection.close()
+
+
+def save_schema(schema):
+    output_path = Path("data/physical_schema.json")
+
+    output_path.parent.mkdir(
+        parents = True,
+        exist_ok = True,
+    )  
+
+    with output_path.open(
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(
+            schema,
+            file,
+            indent=2,
+            ensure_ascii=False,
+        )
+    print(f"Schema saved to: {output_path}")
+
+
+
+def main():
+    print("Extracting database schema...")
+
+    schema = extract_schema()
+
+    print(
+        f"Found {len(schema['tables'])} tables"
+        f" and {len(schema['relationships'])} relationships."
+    )                  
+
+    save_schema(schema)
+
+
+if __name__ == "__main__":
+    main()    
