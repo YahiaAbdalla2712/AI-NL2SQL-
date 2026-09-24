@@ -1,0 +1,313 @@
+[
+  {
+    "chunk_type": "entity",
+    "entity": "dbo.accounts",
+    "text": "Entity: dbo.accounts\nDescription: Represents bank accounts with details such as account ID, customer ID, account type, balance in USD, and open date.\nConcpets: List all accounts, Find account by ID, Get account balance, Retrieve account history, Identify customer associated with an account, Update account details, Calculate total account balance, Find accounts with specific type"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.accounts",
+    "column": "account_id",
+    "text": "Entity: dbo.accounts\nColumn: account_id\nDescription: Unique identifier for each account.\nSynonyms: Account Number, Bank Account ID, Customer's Account"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.accounts",
+    "column": "customer_id",
+    "text": "Entity: dbo.accounts\nColumn: customer_id\nDescription: ID of the customer associated with the account.\nSynonyms: Customer ID, Customer Account, Customer's Bank Account"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.accounts",
+    "column": "account_type",
+    "text": "Entity: dbo.accounts\nColumn: account_type\nDescription: Type of account (e.g., savings, checking, etc.).\nSynonyms: Account Type, Account Category, Account Category ID"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.accounts",
+    "column": "balance_usd",
+    "text": "Entity: dbo.accounts\nColumn: balance_usd\nDescription: Current balance of the account in USD.\nSynonyms: Account Balance, Bank Balance, USD Balance"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.accounts",
+    "column": "open_date",
+    "text": "Entity: dbo.accounts\nColumn: open_date\nDescription: Date when the account was opened.\nSynonyms: Account Open Date, Account Opening Date, Account Opened Date"
+  },
+  {
+    "chunk_type": "relationship",
+    "entity": "dbo.accounts",
+    "from_table": "dbo.accounts",
+    "from_column": "customer_id",
+    "to_table": "dbo.customers",
+    "to_column": "customer_id",
+    "text": "Relationship:\ndbo.accounts.customer_idreferences dbo.customers.customer_id\n\nDescription: Foreign key relationship from accounts to customers."
+  },
+  {
+    "chunk_type": "entity",
+    "entity": "dbo.branches",
+    "text": "Entity: dbo.branches\nDescription: Information about branches including their names, managers, and locations.\nConcpets: List of branches, Branch manager details, Branch location information, Branch name lookup, Branch manager contact information, Branch city and country details, Branches by manager, Branches by city"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.branches",
+    "column": "branch_id",
+    "text": "Entity: dbo.branches\nColumn: branch_id\nDescription: Unique identifier for each branch\nSynonyms: Branch ID, Branch code, Branch reference"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.branches",
+    "column": "branch_name",
+    "text": "Entity: dbo.branches\nColumn: branch_name\nDescription: Name of the branch\nSynonyms: Branch name, Facility name, Office name"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.branches",
+    "column": "manager_name",
+    "text": "Entity: dbo.branches\nColumn: manager_name\nDescription: Name of the manager for the branch\nSynonyms: Manager name, Manager's name, Manager's full name"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.branches",
+    "column": "city",
+    "text": "Entity: dbo.branches\nColumn: city\nDescription: City where the branch is located\nSynonyms: City name, City of branch, Branch city"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.branches",
+    "column": "country",
+    "text": "Entity: dbo.branches\nColumn: country\nDescription: Country where the branch is located\nSynonyms: Country name, Branch country, Location country"
+  },
+  {
+    "chunk_type": "entity",
+    "entity": "dbo.cards",
+    "text": "Entity: dbo.cards\nDescription: Card information table\nConcpets: card details, account associated with card, card type, card expiration date, card ID, account ID, card expiration date in datetime format"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.cards",
+    "column": "card_id",
+    "text": "Entity: dbo.cards\nColumn: card_id\nDescription: Unique identifier for each card\nSynonyms: card number, card reference, card ID number"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.cards",
+    "column": "account_id",
+    "text": "Entity: dbo.cards\nColumn: account_id\nDescription: ID of the account associated with the card\nSynonyms: account reference, account ID, account number"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.cards",
+    "column": "card_type",
+    "text": "Entity: dbo.cards\nColumn: card_type\nDescription: Type of the card (e.g., credit, debit)\nSynonyms: card type, card kind, payment method"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.cards",
+    "column": "expiration_date",
+    "text": "Entity: dbo.cards\nColumn: expiration_date\nDescription: Date when the card expires\nSynonyms: card expiry date, card expiration date, card expiry"
+  },
+  {
+    "chunk_type": "relationship",
+    "entity": "dbo.cards",
+    "from_table": "dbo.cards",
+    "from_column": "account_id",
+    "to_table": "dbo.accounts",
+    "to_column": "account_id",
+    "text": "Relationship:\ndbo.cards.account_idreferences dbo.accounts.account_id\n\nDescription: Foreign key relationship from cards to accounts"
+  },
+  {
+    "chunk_type": "entity",
+    "entity": "dbo.customers",
+    "text": "Entity: dbo.customers\nDescription: Customer information including their ID, name, email, city, credit score, and creation timestamp.\nConcpets: List of customers, Customer details, Customer ID, Customer name, Customer email, Customer city, Customer credit score, Customer creation date"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.customers",
+    "column": "customer_id",
+    "text": "Entity: dbo.customers\nColumn: customer_id\nDescription: Unique identifier for each customer.\nSynonyms: Customer ID, Customer Ref, Customer Code"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.customers",
+    "column": "first_name",
+    "text": "Entity: dbo.customers\nColumn: first_name\nDescription: The first name of the customer.\nSynonyms: First Name, Forename, Given Name"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.customers",
+    "column": "last_name",
+    "text": "Entity: dbo.customers\nColumn: last_name\nDescription: The last name of the customer.\nSynonyms: Last Name, Surname, Family Name"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.customers",
+    "column": "email",
+    "text": "Entity: dbo.customers\nColumn: email\nDescription: The email address of the customer.\nSynonyms: Email Address, Contact Email, Email"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.customers",
+    "column": "city",
+    "text": "Entity: dbo.customers\nColumn: city\nDescription: The city where the customer resides.\nSynonyms: City, Location, Residence"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.customers",
+    "column": "credit_score",
+    "text": "Entity: dbo.customers\nColumn: credit_score\nDescription: The credit score of the customer.\nSynonyms: Credit Score, Credit Rating, Creditworthiness"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.customers",
+    "column": "created_at",
+    "text": "Entity: dbo.customers\nColumn: created_at\nDescription: The date and time when the customer record was created.\nSynonyms: Creation Date, Record Date, Creation Timestamp"
+  },
+  {
+    "chunk_type": "relationship",
+    "entity": "dbo.customers",
+    "from_table": "dbo.accounts",
+    "from_column": "customer_id",
+    "to_table": "dbo.customers",
+    "to_column": "customer_id",
+    "text": "Relationship:\ndbo.accounts.customer_idreferences dbo.customers.customer_id\n\nDescription: Foreign key relationship from accounts table to customers table."
+  },
+  {
+    "chunk_type": "relationship",
+    "entity": "dbo.customers",
+    "from_table": "dbo.loans",
+    "from_column": "customer_id",
+    "to_table": "dbo.customers",
+    "to_column": "customer_id",
+    "text": "Relationship:\ndbo.loans.customer_idreferences dbo.customers.customer_id\n\nDescription: Foreign key relationship from loans table to customers table."
+  },
+  {
+    "chunk_type": "entity",
+    "entity": "dbo.loans",
+    "text": "Entity: dbo.loans\nDescription: Loan information including customer ID, loan amount, interest rate, and start date.\nConcpets: List of loans, Customer loan details, Loan amount distribution, Interest rate analysis, Loan start dates, Customer loan history, Loan performance metrics, Customer loan statistics"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.loans",
+    "column": "loan_id",
+    "text": "Entity: dbo.loans\nColumn: loan_id\nDescription: Unique identifier for each loan.\nSynonyms: Loan ID, Loan reference, Unique loan code"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.loans",
+    "column": "customer_id",
+    "text": "Entity: dbo.loans\nColumn: customer_id\nDescription: ID of the customer who received the loan.\nSynonyms: Customer ID, Customer reference, Loan customer ID"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.loans",
+    "column": "loan_amount",
+    "text": "Entity: dbo.loans\nColumn: loan_amount\nDescription: Total amount of the loan.\nSynonyms: Loan amount, Principal amount, Total loan value"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.loans",
+    "column": "interest_rate",
+    "text": "Entity: dbo.loans\nColumn: interest_rate\nDescription: Interest rate associated with the loan.\nSynonyms: Interest rate, Rate of interest, Loan interest rate"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.loans",
+    "column": "start_date",
+    "text": "Entity: dbo.loans\nColumn: start_date\nDescription: Date when the loan was initiated.\nSynonyms: Loan start date, Initiation date, Loan start"
+  },
+  {
+    "chunk_type": "relationship",
+    "entity": "dbo.loans",
+    "from_table": "dbo.loans",
+    "from_column": "customer_id",
+    "to_table": "dbo.customers",
+    "to_column": "customer_id",
+    "text": "Relationship:\ndbo.loans.customer_idreferences dbo.customers.customer_id\n\nDescription: Foreign key relationship linking loans to customers."
+  },
+  {
+    "chunk_type": "entity",
+    "entity": "dbo.merchants",
+    "text": "Entity: dbo.merchants\nDescription: Information about merchants, including their names and cities.\nConcpets: merchant details, merchant information, business location, city of merchant, merchant name, merchant ID, business address, merchant contact information"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.merchants",
+    "column": "merchant_id",
+    "text": "Entity: dbo.merchants\nColumn: merchant_id\nDescription: Unique identifier for each merchant.\nSynonyms: merchant code, merchant ID number, business ID"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.merchants",
+    "column": "merchant_name",
+    "text": "Entity: dbo.merchants\nColumn: merchant_name\nDescription: Name of the merchant.\nSynonyms: merchant name, business name, company name"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.merchants",
+    "column": "city",
+    "text": "Entity: dbo.merchants\nColumn: city\nDescription: City where the merchant is located.\nSynonyms: city of merchant, merchant city, business city"
+  },
+  {
+    "chunk_type": "relationship",
+    "entity": "dbo.merchants",
+    "from_table": "dbo.transactions",
+    "from_column": "merchant_id",
+    "to_table": "dbo.merchants",
+    "to_column": "merchant_id",
+    "text": "Relationship:\ndbo.transactions.merchant_idreferences dbo.merchants.merchant_id\n\nDescription: Foreign key relationship where transactions are linked to merchants by merchant ID."
+  },
+  {
+    "chunk_type": "entity",
+    "entity": "dbo.transactions",
+    "text": "Entity: dbo.transactions\nDescription: Transactions table contains information about transactions made, including the account that made the transaction, the merchant involved, and the amount in USD.\nConcpets: List of transactions, Transaction details, Merchant transactions, Account transactions, Transaction amount, Transaction date, Account ID, Merchant ID"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.transactions",
+    "column": "transaction_id",
+    "text": "Entity: dbo.transactions\nColumn: transaction_id\nDescription: Unique identifier for each transaction\nSynonyms: Transaction reference, Transaction ID, Trans ID"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.transactions",
+    "column": "account_id",
+    "text": "Entity: dbo.transactions\nColumn: account_id\nDescription: ID of the account that made the transaction\nSynonyms: Account reference, Account ID, Acc ID"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.transactions",
+    "column": "merchant_id",
+    "text": "Entity: dbo.transactions\nColumn: merchant_id\nDescription: ID of the merchant involved in the transaction\nSynonyms: Merchant reference, Merchant ID, Merch ID"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.transactions",
+    "column": "amount_usd",
+    "text": "Entity: dbo.transactions\nColumn: amount_usd\nDescription: Amount of the transaction in USD\nSynonyms: Transaction amount, USD amount, Transaction cost"
+  },
+  {
+    "chunk_type": "column",
+    "entity": "dbo.transactions",
+    "column": "transaction_date",
+    "text": "Entity: dbo.transactions\nColumn: transaction_date\nDescription: Date and time when the transaction occurred\nSynonyms: Transaction date, Transaction time, Date of transaction"
+  },
+  {
+    "chunk_type": "relationship",
+    "entity": "dbo.transactions",
+    "from_table": "dbo.transactions",
+    "from_column": "account_id",
+    "to_table": "dbo.accounts",
+    "to_column": "account_id",
+    "text": "Relationship:\ndbo.transactions.account_idreferences dbo.accounts.account_id\n\nDescription: Foreign key relationship from transactions to accounts"
+  },
+  {
+    "chunk_type": "relationship",
+    "entity": "dbo.transactions",
+    "from_table": "dbo.transactions",
+    "from_column": "merchant_id",
+    "to_table": "dbo.merchants",
+    "to_column": "merchant_id",
+    "text": "Relationship:\ndbo.transactions.merchant_idreferences dbo.merchants.merchant_id\n\nDescription: Foreign key relationship from transactions to merchants"
+  }
+]
