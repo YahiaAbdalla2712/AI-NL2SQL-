@@ -28,21 +28,33 @@ class SemanticColumn(BaseModel):
     )
 
 class SemanticRelationship(BaseModel):
+    from_table:str = Field(
+        description=(
+            "Exact source table in schema.table format."
+        )
+    )
+
     from_column:str = Field(
         description=(
-            "Exact source column in schema.table.column format."
+            "Exact source column name."
         )
-    )    
+    ) 
+
+    to_table:str = Field(
+        description=(
+            "Exact referenced table in schema.table format."
+        )
+    )   
 
     to_column: str = Field(
         description=(
-            "Exact target column in schema.table.column format."
+            "Exact referenced column name."
         )
     )
 
     description:str = Field(
         description=(
-            "Semantic explanation of the relationship."
+            "Concise semantic explanation of this foreign-key relationship."
         )
     )
 
@@ -155,6 +167,37 @@ IMPORTANT RULES:
 
 10. Be concise and useful for natural-language-to-SQL retrieval.
 
+RELATIONSHIP FORMAT:
+
+For every relationship, you MUST provide four separate fields:
+
+- from_table
+- from_column
+- to_table
+- to_column
+
+Table names MUST use schema.table format.
+
+For example, if the physical schema contains:
+
+dbo.accounts.customer_id
+    references
+dbo.customers.customer_id
+
+you MUST return:
+
+{
+  "from_table": "dbo.accounts",
+  "from_column": "customer_id",
+  "to_table": "dbo.customers",
+  "to_column": "customer_id"
+}
+
+Do NOT return only:
+"customer_id -> customer_id"
+
+Do NOT omit the schema name.
+
 The output will be validated programmatically after you respond.
 """
 
@@ -237,45 +280,181 @@ def validate_semantic_entity(
 
     physical_relationships = set()
 
+    for relationship in all_relationships:
+
+        physical_from = (
+            f"{relationship['from']['schema']}."
+            f"{relationship['from']['table']}."
+            f"{relationship['from']['column']}"
+        )
+
+        physical_to = (
+            f"{relationship['to']['schema']}."
+            f"{relationship['to']['table']}."
+            f"{relationship['to']['column']}"
+        )
+
+        physical_relationships.add(
+            (physical_from, physical_to)
+        )           
+
     for relationship in semantic_entity.relationships:
 
-        from_column = relationship.from_column
-        to_column = relationship.to_column
+        semantic_from = (
+            f"{relationship.from_table}."
+            f"{relationship.from_column}"
+        )
 
-        valid_from = False
-        valid_to = False
+        semantic_to = (
+            f"{relationship.to_table}."
+            f"{relationship.to_column}"
+        )
 
-        for physical_relationship in all_relationships:
-
-            physical_form = (
-                f"{physical_relationship['from']['schema']}."
-                f"{physical_relationship['from']['table']}."
-                f"{physical_relationship['from']['column']}"
-            )
-
-            physical_to = (
-                f"{physical_relationship['to']['schema']}."
-                f"{physical_relationship['to']['table']}."
-                f"{physical_relationship['to']['column']}"
-            )
-
-            if (
-                from_column == physical_form
-                and to_column == physical_to
-            ):
-                valid_from = True
-                valid_to = True
-
+        if(
+            semantic_from,
+            semantic_to
+        ) not in physical_relationships:
             if(
-                from_column == physical_to
-                and to_column == physical_form
-            ):
-                valid_from = True
-                valid_to = True
-
-        if not (valid_from and valid_to):
-            errors.append(
-                "Unkown semantic relationship: "
-                f"{from_column} -> {to_column}"
-            )            
+                semantic_to,
+                semantic_from
+            ) not in physical_relationships:
+                errors.append(
+                    "Unkown semantic relationship: "
+                    f"{semantic_from} -> {semantic_to}"
+                )
+            
     return errors
+
+
+#convert model output to JSON
+def semantic_entity_to_dict(semantic_entity: SemanticEntity):
+    return semantic_entity.model_dump()
+
+
+#buid the semantic schema
+def build_semantic_schema(physical_schema):
+
+    all_relationsships = physical_schema["relationships"]
+
+    llm = build_llm()
+
+    entities = []
+
+    for index, table in enumerate(
+        physical_schema["tables"],
+        start = 1
+    ):
+        table_id = (
+            f"{table['schema']}."
+            f"{table['name']}"
+        )
+
+        print()
+        print("="*70)
+        print(
+            f"processing entity {index}/"
+            f"{len(physical_schema['tables'])}: "
+            f"{table_id}"
+        )
+        print("="*70)
+
+        context = build_entity_context(table, physical_schema["relationships"])
+
+        prompt = build_prompt(context)
+
+        print("Calling local LLM...")
+
+        messages = []
+        messages.append(SystemMessage(content=SYSTEM_PROMPT))
+        messages.append(HumanMessage(content=prompt))
+
+        semantic_entity = llm.invoke(messages)
+
+        print("LLM response received.")
+
+        semantic_entity.entity = (
+            f"{table['schema']}.{table['name']}"
+        )
+        errors = validate_semantic_entity(semantic_entity=semantic_entity, physical_entity=table, all_relationships=all_relationsships)
+
+        if errors:
+            print()
+            print("SEMANTIC VALIDATION FAILED:")
+
+            for error in errors:
+                print(f" - {error}")
+
+            raise ValueError(
+                f"Semantic validation failed for {table_id}"
+            )    
+
+        print("Semantic validation passed.")
+
+        entities.append(
+            semantic_entity_to_dict(
+                semantic_entity=semantic_entity
+            )
+        )
+
+    return {
+        "version": 1,
+        "database": physical_schema["database"],
+        "source": {
+            "type": "sql_server",
+            "server": physical_schema["server"],
+        },
+        "entities": entities,
+        "relationships": physical_schema["relationships"],
+    }
+
+
+def save_semantic_schema(semantic_schema):
+
+    SEMANTIC_SCHEMA_PATH.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    with SEMANTIC_SCHEMA_PATH.open(
+        "w",
+        encoding="utf-8"
+    )as file:
+        json.dump(
+            semantic_schema,
+            file,
+            indent=2,
+            ensure_ascii=False
+        )
+
+    print()
+    print(
+        f"semantic schema saved to: "
+        f"{SEMANTIC_SCHEMA_PATH}"
+    )    
+
+
+
+def main():
+
+    print("Loading physical schema...")
+
+    physical_schema = load_physical_schema()
+
+    print(
+        f"Found "
+        f"{len(physical_schema['tables'])} tables."
+    )
+
+    print()
+    print(
+        f"Using local model: {MODEL}"
+    )
+
+    semantic_schema = build_semantic_schema(physical_schema)
+    save_semantic_schema(semantic_schema)
+
+    print()
+    print("Semantic schema generation completed successfully.")
+
+if __name__ == "__main__":
+    main()    
