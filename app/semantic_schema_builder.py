@@ -155,7 +155,20 @@ IMPORTANT RULES:
 
 4. Every table name MUST exactly match the supplied table.
 
-5. Synonyms should represent realistic natural-language ways a user might refer to the column.
+5. Synonyms are required for every column.
+
+For every column, generate 3 to 6 realistic natural-language expressions that a business
+user might use when referring to that column.
+
+Synonyms must:
+- be different from the exact column name when possible.
+- represent realistic user language.
+- include common business terminology.
+- include shot natural-language phrases.
+- NOT invent information that is not supported by the column.
+
+DO NOT return an empty synonmys list unless it is genuinely impossible to derive
+a useful natural-language expression from the column name.
 
 6. Concepts should represent useful buisness/analytical concepts that can reasonably be derived from the schema.
 
