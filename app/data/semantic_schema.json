@@ -8,67 +8,61 @@
   "entities": [
     {
       "entity": "dbo.accounts",
-      "description": "Customer account information",
-      "concepts": [],
+      "description": "Represents bank accounts with details such as account ID, customer ID, account type, balance in USD, and open date.",
+      "concepts": [
+        "List all accounts",
+        "Find account by ID",
+        "Get account balance",
+        "Retrieve account history",
+        "Identify customer associated with an account",
+        "Update account details",
+        "Calculate total account balance",
+        "Find accounts with specific type"
+      ],
       "columns": [
         {
           "name": "account_id",
-          "description": "Unique identifier for each account",
+          "description": "Unique identifier for each account.",
           "synonyms": [
             "Account Number",
-            "Customer Account ID",
-            "Customer ID",
-            "Account Ref",
-            "Customer Account",
-            "Customer Account Code"
+            "Bank Account ID",
+            "Customer's Account"
           ]
         },
         {
           "name": "customer_id",
-          "description": "Customer associated with the account",
+          "description": "ID of the customer associated with the account.",
           "synonyms": [
             "Customer ID",
-            "Customer Ref",
-            "Customer Code",
             "Customer Account",
-            "Customer Account Number",
-            "Customer Number"
+            "Customer's Bank Account"
           ]
         },
         {
           "name": "account_type",
-          "description": "Type of account (e.g., savings, checking)",
+          "description": "Type of account (e.g., savings, checking, etc.).",
           "synonyms": [
             "Account Type",
             "Account Category",
-            "Account Category Code",
-            "Account Type Code",
-            "Account Category",
-            "Account Type"
+            "Account Category ID"
           ]
         },
         {
           "name": "balance_usd",
-          "description": "Current balance in USD",
+          "description": "Current balance of the account in USD.",
           "synonyms": [
-            "Balance",
-            "USD Balance",
-            "Balance in USD",
-            "USD Amount",
-            "Balance Amount",
-            "USD Balance Amount"
+            "Account Balance",
+            "Bank Balance",
+            "USD Balance"
           ]
         },
         {
           "name": "open_date",
-          "description": "Date the account was opened",
+          "description": "Date when the account was opened.",
           "synonyms": [
-            "Open Date",
-            "Account Open Date",
             "Account Open Date",
             "Account Opening Date",
-            "Account Open Date",
-            "Account Open Date"
+            "Account Opened Date"
           ]
         }
       ],
@@ -78,58 +72,67 @@
           "from_column": "customer_id",
           "to_table": "dbo.customers",
           "to_column": "customer_id",
-          "description": "Foreign key relationship from accounts to customers"
+          "description": "Foreign key relationship from accounts to customers."
         }
       ]
     },
     {
       "entity": "dbo.branches",
-      "description": "Branches",
-      "concepts": [],
+      "description": "Information about branches including their names, managers, and locations.",
+      "concepts": [
+        "List of branches",
+        "Branch manager details",
+        "Branch location information",
+        "Branch name lookup",
+        "Branch manager contact information",
+        "Branch city and country details",
+        "Branches by manager",
+        "Branches by city"
+      ],
       "columns": [
         {
           "name": "branch_id",
-          "description": "Branch ID",
+          "description": "Unique identifier for each branch",
           "synonyms": [
-            "branch code",
-            "branch reference",
-            "facility ID"
+            "Branch ID",
+            "Branch code",
+            "Branch reference"
           ]
         },
         {
           "name": "branch_name",
-          "description": "Branch Name",
+          "description": "Name of the branch",
           "synonyms": [
-            "branch title",
-            "branch designation",
-            "facility name"
+            "Branch name",
+            "Facility name",
+            "Office name"
           ]
         },
         {
           "name": "manager_name",
-          "description": "Manager Name",
+          "description": "Name of the manager for the branch",
           "synonyms": [
-            "manager title",
-            "manager designation",
-            "facility manager"
+            "Manager name",
+            "Manager's name",
+            "Manager's full name"
           ]
         },
         {
           "name": "city",
-          "description": "City",
+          "description": "City where the branch is located",
           "synonyms": [
-            "city name",
-            "locality",
-            "place"
+            "City name",
+            "City of branch",
+            "Branch city"
           ]
         },
         {
           "name": "country",
-          "description": "Country",
+          "description": "Country where the branch is located",
           "synonyms": [
-            "nation",
-            "country name",
-            "geo"
+            "Country name",
+            "Branch country",
+            "Location country"
           ]
         }
       ],
@@ -137,60 +140,77 @@
     },
     {
       "entity": "dbo.cards",
-      "description": "Card information",
-      "concepts": [],
+      "description": "Card information table",
+      "concepts": [
+        "card details",
+        "account associated with card",
+        "card type",
+        "card expiration date",
+        "card ID",
+        "account ID",
+        "card expiration date in datetime format"
+      ],
       "columns": [
         {
           "name": "card_id",
           "description": "Unique identifier for each card",
           "synonyms": [
-            "Card Number",
-            "Credit Card ID",
-            "Card Code"
+            "card number",
+            "card reference",
+            "card ID number"
           ]
         },
         {
           "name": "account_id",
-          "description": "Identifier of the associated account",
+          "description": "ID of the account associated with the card",
           "synonyms": [
-            "Account Number",
-            "Customer ID",
-            "Bank Account ID"
+            "account reference",
+            "account ID",
+            "account number"
           ]
         },
         {
           "name": "card_type",
-          "description": "Type of the card (e.g., Visa, MasterCard)",
+          "description": "Type of the card (e.g., credit, debit)",
           "synonyms": [
-            "Card Type",
-            "Credit Card Type",
-            "Payment Method"
+            "card type",
+            "card kind",
+            "payment method"
           ]
         },
         {
           "name": "expiration_date",
           "description": "Date when the card expires",
           "synonyms": [
-            "Expiry Date",
-            "Valid Until",
-            "Expiration Date"
+            "card expiry date",
+            "card expiration date",
+            "card expiry"
           ]
         }
       ],
       "relationships": [
         {
-          "from_table": "dbo.accounts",
+          "from_table": "dbo.cards",
           "from_column": "account_id",
-          "to_table": "dbo.cards",
+          "to_table": "dbo.accounts",
           "to_column": "account_id",
-          "description": "Foreign key relationship from accounts to cards"
+          "description": "Foreign key relationship from cards to accounts"
         }
       ]
     },
     {
       "entity": "dbo.customers",
-      "description": "Customers table contains information about customers including their first name, last name, email, city, credit score, and creation timestamp.",
-      "concepts": [],
+      "description": "Customer information including their ID, name, email, city, credit score, and creation timestamp.",
+      "concepts": [
+        "List of customers",
+        "Customer details",
+        "Customer ID",
+        "Customer name",
+        "Customer email",
+        "Customer city",
+        "Customer credit score",
+        "Customer creation date"
+      ],
       "columns": [
         {
           "name": "customer_id",
@@ -232,9 +252,9 @@
           "name": "city",
           "description": "The city where the customer resides.",
           "synonyms": [
-            "City of Residence",
-            "City Address",
-            "Residence City"
+            "City",
+            "Location",
+            "Residence"
           ]
         },
         {
@@ -248,11 +268,11 @@
         },
         {
           "name": "created_at",
-          "description": "The timestamp when the customer record was created.",
+          "description": "The date and time when the customer record was created.",
           "synonyms": [
-            "Creation Time",
+            "Creation Date",
             "Record Date",
-            "Creation Date"
+            "Creation Timestamp"
           ]
         }
       ],
@@ -275,52 +295,61 @@
     },
     {
       "entity": "dbo.loans",
-      "description": "Loan information",
-      "concepts": [],
+      "description": "Loan information including customer ID, loan amount, interest rate, and start date.",
+      "concepts": [
+        "List of loans",
+        "Customer loan details",
+        "Loan amount distribution",
+        "Interest rate analysis",
+        "Loan start dates",
+        "Customer loan history",
+        "Loan performance metrics",
+        "Customer loan statistics"
+      ],
       "columns": [
         {
           "name": "loan_id",
-          "description": "Unique identifier for each loan",
+          "description": "Unique identifier for each loan.",
           "synonyms": [
             "Loan ID",
-            "Loan Reference",
-            "Financial Instrument ID"
+            "Loan reference",
+            "Unique loan code"
           ]
         },
         {
           "name": "customer_id",
-          "description": "ID of the customer who applied for the loan",
+          "description": "ID of the customer who received the loan.",
           "synonyms": [
             "Customer ID",
-            "Applicant ID",
-            "Client ID"
+            "Customer reference",
+            "Loan customer ID"
           ]
         },
         {
           "name": "loan_amount",
-          "description": "Amount of the loan",
+          "description": "Total amount of the loan.",
           "synonyms": [
-            "Loan Amount",
-            "Principal",
-            "Funding Amount"
+            "Loan amount",
+            "Principal amount",
+            "Total loan value"
           ]
         },
         {
           "name": "interest_rate",
-          "description": "Interest rate associated with the loan",
+          "description": "Interest rate associated with the loan.",
           "synonyms": [
-            "Interest Rate",
-            "Rate",
-            "Interest Percentage"
+            "Interest rate",
+            "Rate of interest",
+            "Loan interest rate"
           ]
         },
         {
           "name": "start_date",
-          "description": "Date when the loan started",
+          "description": "Date when the loan was initiated.",
           "synonyms": [
-            "Start Date",
-            "Commencement Date",
-            "Effective Date"
+            "Loan start date",
+            "Initiation date",
+            "Loan start"
           ]
         }
       ],
@@ -330,40 +359,49 @@
           "from_column": "customer_id",
           "to_table": "dbo.customers",
           "to_column": "customer_id",
-          "description": "Foreign key relationship from loans to customers"
+          "description": "Foreign key relationship linking loans to customers."
         }
       ]
     },
     {
       "entity": "dbo.merchants",
-      "description": "Information about merchants including their names and cities",
-      "concepts": [],
+      "description": "Information about merchants, including their names and cities.",
+      "concepts": [
+        "merchant details",
+        "merchant information",
+        "business location",
+        "city of merchant",
+        "merchant name",
+        "merchant ID",
+        "business address",
+        "merchant contact information"
+      ],
       "columns": [
         {
           "name": "merchant_id",
-          "description": "Unique identifier for each merchant",
+          "description": "Unique identifier for each merchant.",
           "synonyms": [
-            "Merchant ID",
-            "Merchant Code",
-            "Business ID"
+            "merchant code",
+            "merchant ID number",
+            "business ID"
           ]
         },
         {
           "name": "merchant_name",
-          "description": "Name of the merchant",
+          "description": "Name of the merchant.",
           "synonyms": [
-            "Merchant Name",
-            "Business Name",
-            "Company Name"
+            "merchant name",
+            "business name",
+            "company name"
           ]
         },
         {
           "name": "city",
-          "description": "City where the merchant is located",
+          "description": "City where the merchant is located.",
           "synonyms": [
-            "City",
-            "Location",
-            "City of Operation"
+            "city of merchant",
+            "merchant city",
+            "business city"
           ]
         }
       ],
@@ -373,58 +411,67 @@
           "from_column": "merchant_id",
           "to_table": "dbo.merchants",
           "to_column": "merchant_id",
-          "description": "Foreign key relationship where transactions are linked to merchants"
+          "description": "Foreign key relationship where transactions are linked to merchants by merchant ID."
         }
       ]
     },
     {
       "entity": "dbo.transactions",
-      "description": "Transaction details including account, merchant, amount, and date.",
-      "concepts": [],
+      "description": "Transactions table contains information about transactions made, including the account that made the transaction, the merchant involved, and the amount in USD.",
+      "concepts": [
+        "List of transactions",
+        "Transaction details",
+        "Merchant transactions",
+        "Account transactions",
+        "Transaction amount",
+        "Transaction date",
+        "Account ID",
+        "Merchant ID"
+      ],
       "columns": [
         {
           "name": "transaction_id",
-          "description": "Unique identifier for each transaction.",
+          "description": "Unique identifier for each transaction",
           "synonyms": [
+            "Transaction reference",
             "Transaction ID",
-            "Trans ID",
-            "Txn ID"
+            "Trans ID"
           ]
         },
         {
           "name": "account_id",
-          "description": "Identifier for the account associated with the transaction.",
+          "description": "ID of the account that made the transaction",
           "synonyms": [
-            "Account Number",
+            "Account reference",
             "Account ID",
             "Acc ID"
           ]
         },
         {
           "name": "merchant_id",
-          "description": "Identifier for the merchant associated with the transaction.",
+          "description": "ID of the merchant involved in the transaction",
           "synonyms": [
+            "Merchant reference",
             "Merchant ID",
-            "Merch ID",
-            "M ID"
+            "Merch ID"
           ]
         },
         {
           "name": "amount_usd",
-          "description": "Amount of the transaction in USD.",
+          "description": "Amount of the transaction in USD",
           "synonyms": [
-            "Transaction Amount",
-            "USD Amount",
-            "Amt"
+            "Transaction amount",
+            "USD amount",
+            "Transaction cost"
           ]
         },
         {
           "name": "transaction_date",
-          "description": "Date and time when the transaction occurred.",
+          "description": "Date and time when the transaction occurred",
           "synonyms": [
-            "Transaction Date",
-            "Trans Date",
-            "Date"
+            "Transaction date",
+            "Transaction time",
+            "Date of transaction"
           ]
         }
       ],
@@ -434,14 +481,14 @@
           "from_column": "account_id",
           "to_table": "dbo.accounts",
           "to_column": "account_id",
-          "description": "Foreign key relationship from transactions to accounts."
+          "description": "Foreign key relationship from transactions to accounts"
         },
         {
           "from_table": "dbo.transactions",
           "from_column": "merchant_id",
           "to_table": "dbo.merchants",
           "to_column": "merchant_id",
-          "description": "Foreign key relationship from transactions to merchants."
+          "description": "Foreign key relationship from transactions to merchants"
         }
       ]
     }

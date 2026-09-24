@@ -21,9 +21,11 @@ class SemanticColumn(BaseModel):
     )
 
     synonyms: list[str] = Field(
-        default_factory=list,
+        min_length=3,
+        max_length=6,
         description=(
-            "Business or analytical concepts represented by this column."
+            "3 to 6 realistic natural-language expressions "
+            "that users might use to refer to this column."
         )
     )
 
@@ -70,9 +72,11 @@ class SemanticEntity(BaseModel):
     )
 
     concepts:list[str] = Field(
-        default_factory=list,
+        min_length=3,
+        max_length=8,
         description=(
-            "Business concepts that can be answered using this entity."
+            "3 to 8 useful business or analytical concepts "
+            "that a user could ask about using this entity."
         )
     )
 
@@ -170,7 +174,13 @@ Synonyms must:
 DO NOT return an empty synonmys list unless it is genuinely impossible to derive
 a useful natural-language expression from the column name.
 
-6. Concepts should represent useful buisness/analytical concepts that can reasonably be derived from the schema.
+6. Concepts are required for every entity. 
+
+For every entity generate 3-8 useful business/analytical concepts
+Think about how a business user would ask about this data,
+not merely how the database engineer named the column.
+
+Concepts must be reasonably supported by the column/table name and its description.
 
 7. Relationship descriptions must describe only the supplied foreign-key relationship.
 
@@ -182,7 +192,15 @@ a useful natural-language expression from the column name.
 
 RELATIONSHIP FORMAT:
 
-For every relationship, you MUST provide four separate fields:
+ONLY include realtionships explicitly provided in PHYSICAL DATABASE INFORMATION.
+
+if the physical schema provides no relationships for this entity,
+return 
+"relationships": []
+
+Never invent a realtionship.
+
+For every supplied relationship, you MUST provide four separate fields:
 
 - from_table
 - from_column
@@ -190,6 +208,8 @@ For every relationship, you MUST provide four separate fields:
 - to_column
 
 Table names MUST use schema.table format.
+
+Do NOT create relationships based on similar column names.
 
 For example, if the physical schema contains:
 
